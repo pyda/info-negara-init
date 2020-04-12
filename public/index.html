@@ -1,0 +1,177 @@
+<html lang="id">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="colorlib.com">
+    <link href="css/font.css" rel="stylesheet" rel="canonical"/>
+    <link href="css/main.css" rel="stylesheet" rel="canonical"/>
+    <title>Info Negara PWA</title>
+
+    <!-- CODE: Add link rel manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- CODE: Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Negara PWA">
+    <link rel="apple-touch-icon" href="images/world3.png" rel="canonical">
+
+    <!-- CODE: Add description here -->
+    <meta name="description" content="Aplikasi sederhana untuk mendapatkan informasi negera-negara di dunia">
+
+    <!-- CODE: Add meta theme-color -->
+    <meta name="theme-color" content="#a598ee" />
+  </head>
+  <body>
+    <div class="s003">
+    <button id="butInstall" aria-label="Install" hidden></button>
+      <form id="form-info">
+        <h1>Info Negara</h1>
+        <div class="inner-form">
+          <div class="input-field first-wrap">
+            <div class="input-select">
+              <select data-trigger="" id="label" name="filter">
+                <option placeholder="" value="0">Pilih Filter</option>
+                <option value="1">Nama Negara</option>
+                <option value="2">Ibu Kota</option>
+                <option value="3">Kode Mata Uang</option>
+                <option value="4">Region</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-field second-wrap">
+            <label for="search">
+            </label>
+              <input id="search" type="text" name="keyword" placeholder="Masukan Keyword* (contoh: Indonesia, Jakarta, IDR, atau Asia)" />
+          </div>
+          <div class="input-field third-wrap">
+            <button class="btn-search" type="button" id="btn-search" aria-label="search">
+              <svg class="svg-inline--fa fa-search fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <h6>*) Keyword pencarian harus menggunakan Bahasa Inggris</h6>
+      </form>
+
+      <div id="box-info">
+        <center><h5 id="info"></h5></center>
+        <div id="info-data">   
+        </div>   
+      </div>
+    </div>
+    <script src="js/extention/choices.js"></script>    
+
+    <!-- CODE: Add the install script here -->
+    <script src="js/install.js"></script>
+
+    <script src="js/extention/jquery-3.5.0.min.js"></script>
+    <script>
+      // CODE: Register service worker.
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('service-worker.js')
+              .then((reg) => {
+                console.log('Service worker registered.', reg);
+              });
+        });
+      }
+
+      const choices = new Choices('[data-trigger]',
+      {
+        searchEnabled: false,
+        itemSelectText: '',
+      });
+
+      function arrayToString(a){
+        var count = 0;
+        var ret = "";
+
+        $.each(a, function(i, d){
+          if(count == 0){
+            ret += d;
+            count++;
+          }else ret += ', '+d;
+        });
+
+        return ret;
+      }
+
+      function numberFormat(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+
+      $(document).ready(function(){
+        $("#btn-search").click(function(){
+          $("#form-info").submit();
+        })
+
+        $("#form-info").submit(function(e){
+          e.preventDefault();
+
+          if($("#search").val() == ""){
+            alert("Keyword pencarian tidak boleh kosong!");
+          }else if($("#label").val() == "0"){
+            alert("Silahkan pilih salah satu kategori pencarian!");
+          }else{
+            $("#info").html("Mencari...");
+            $("#info-data").html("");
+            
+
+            $.ajax({
+              url: "request.php",
+              data: {
+                label: $("#label").val(),
+                keyword: $("#search").val()
+              },
+              success: function( result ) {
+                var r = JSON.parse(result);
+
+                if(r.hasOwnProperty("status")){
+                  $("#info").html(r.message);
+                }else{
+                  var j = r.length;
+                  $("#info").html("Ditemukan Sebanyak "+j+" Hasil Pencarian");
+
+                  $.each(r, function(i, d){
+
+                    var area = (!d.area)? d.area: numberFormat(d.area);
+                    var population = (!d.population)? d.population: numberFormat(d.population);
+
+                    $("#info-data")
+                      .append('<div class="inner-info">'+
+                                '<h3 class="inner-info-title">'+d.name+'</h3>' +
+                                '<div class="inner-info-left">' +
+                                  '<p><b>Ibu Kota</b>: '+d.capital+'</p>'+
+                                  '<p><b>Region</b>: '+d.region+'</p>'+
+                                  '<p><b>Sub Region</b>: '+d.subregion+'</p>'+
+                                  '<p><b>Populasi</b>: '+population+'</p>'+
+                                  '<p><b>Mata Uang</b>: '+arrayToString(d.currencies)+'</p>'+
+                                  '<p><b>Bahasa</b>: '+arrayToString(d.languages)+'</p>'+
+                                '</div>'+
+                                '<div class="inner-info-right">' +
+                                  '<p><b>Top Level Domain</b>: '+d.topLevelDomain+'</p>'+
+                                  '<p><b>Kode Telepon</b>: '+d.callingCodes+'</p>'+
+                                  '<p><b>Latlng</b>: '+arrayToString(d.latlng)+'</p>'+
+                                  '<p><b>Demonim</b>: '+d.demonym+'</p>'+
+                                  '<p><b>Luas Area</b>: '+area+' KM<sup>2</sup></p>'+
+                                  '<p><b>Zona Waktu</b>: '+arrayToString(d.timezones)+'</p>'+
+                                '</div>'+
+                              '</div>');
+                    j++;
+
+                  });
+                }
+              },
+              error: function (request, status, error) {
+                $("#info").html("Ups, Anda sepertinya sedang tidak terhubung ke Internet");
+              }
+            });
+          }
+        });
+      });
+    </script>
+  </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
