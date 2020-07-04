@@ -4,7 +4,7 @@
   "start_url": "index.html",
   "icons": [
     {
-    "src": "images/world.png",
+    "src": "https://cdn.glitch.com/48568c83-8c73-4cc5-8dff-11a8b7900411%2Fworld.png?v=1593874151058",
       "sizes": "512x512",
       "type": "image/png"
     }
