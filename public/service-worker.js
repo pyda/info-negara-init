@@ -31,7 +31,7 @@ const FILES_TO_CACHE = [
   'js/extention/custom-materialize.js',
   'js/extention/flatpickr.js',
   'js/extention/jquery-3.5.0.min.js',
-  'images/world.png',
+  'https://cdn.glitch.com/48568c83-8c73-4cc5-8dff-11a8b7900411%2Fworld.png?v=1593874151058',
   'css/font.css',
   'css/main.css',
   'css/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2',
