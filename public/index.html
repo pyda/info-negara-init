@@ -11,6 +11,16 @@
       href="https://glitch.com/edit/favicon-app.ico"
       type="image/x-icon"
     />
+    <link rel="canonical" href="https://pyda-info-negara.glitch.me/"/>
+    
+    <script type="text/javascript">
+      console.log("http tp https");
+      if (location.protocol != "https:") {
+        location.href =
+          "https:" +
+          window.location.href.substring(window.location.protocol.length);
+      }
+    </script>
 
     <link href="css/font.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
@@ -95,14 +105,6 @@
         <div id="info-data"></div>
       </div>
     </div>
-    <script>
-      console.log("http tp https");
-      if (location.protocol != "https:") {
-        location.href =
-          "https:" +
-          window.location.href.substring(window.location.protocol.length);
-      }
-    </script>
 
     <script src="js/extention/choices.js"></script>
 
