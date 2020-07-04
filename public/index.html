@@ -95,20 +95,21 @@
         <div id="info-data"></div>
       </div>
     </div>
-
-    <script src="js/extention/choices.js"></script>
-
-    <!-- CODE: Add the install script here -->
-    <script src="js/install.js"></script>
-
-    <script src="js/extention/jquery-3.5.0.min.js"></script>
     <script>
+      console.log("http tp https");
       if (location.protocol != "https:") {
         location.href =
           "https:" +
           window.location.href.substring(window.location.protocol.length);
       }
     </script>
+
+    <script src="js/extention/choices.js"></script>
+
+    <!-- CODE: Add the install script here -->
+    <!-- <script src="js/install.js"></script> -->
+
+    <script src="js/extention/jquery-3.5.0.min.js"></script>
     <script>
       // CODE: Register service worker.
       if ("serviceWorker" in navigator) {
