@@ -23,7 +23,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="apple-mobile-web-app-title" content="Negara PWA" />
-    <link rel="apple-touch-icon" href="https://cdn.glitch.com/48568c83-8c73-4cc5-8dff-11a8b7900411%2Fworld.png?v=1593874151058" />
+    <link
+      rel="apple-touch-icon"
+      href="https://cdn.glitch.com/48568c83-8c73-4cc5-8dff-11a8b7900411%2Fworld.png?v=1593874151058"
+    />
 
     <!-- CODE: Add description here -->
     <meta
@@ -92,13 +95,20 @@
         <div id="info-data"></div>
       </div>
     </div>
-    
+
     <script src="js/extention/choices.js"></script>
 
     <!-- CODE: Add the install script here -->
     <script src="js/install.js"></script>
 
     <script src="js/extention/jquery-3.5.0.min.js"></script>
+    <script>
+      if (location.protocol != "https:") {
+        location.href =
+          "https:" +
+          window.location.href.substring(window.location.protocol.length);
+      }
+    </script>
     <script>
       // CODE: Register service worker.
       if ("serviceWorker" in navigator) {
