@@ -1,19 +1,11 @@
-const express = require('express');
-const fetch = require('node-fetch');
-const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
-
-/**
- * Starts the Express server.
- *
- * @return {ExpressServer} instance of the Express server.
- */
-function startServer() {
-  const app = express();
-
-  // Redirect HTTP to HTTPS,
-  app.use(redirectToHTTPS([/localhost:(\d{4})/], [], 301));
+function checkHttps(req, res, next){
+  // protocol check, if http, redirect to https
   
-  app.use(express.static('public'));
+  if(req.get('X-Forwarded-Proto').indexOf("https")!=-1){
+    return next()
+  } else {
+    res.redirect('https://' + req.hostname + req.url);
+  }
 }
 
-startServer();
+app.all('*', checkHttps);
