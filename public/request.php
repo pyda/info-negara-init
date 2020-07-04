@@ -38,7 +38,7 @@ if($api != ""){
 		CURLOPT_CUSTOMREQUEST => "GET",
 		CURLOPT_HTTPHEADER => array(
 			"x-rapidapi-host: restcountries-v1.p.rapidapi.com",
-			"x-rapidapi-key: 06cba7f53amshf379946858e53ecp179e48jsnd90d3958684d"
+			"x-rapidapi-key: YOUR_SECRET_KEY"
 		),
 	));
 
