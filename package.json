@@ -1,19 +1,31 @@
 {
-  "name": "lighthouse-100",
-  "version": "0.0.1",
+  "name": "your-first-pwapp",
+  "version": "2.0.0",
+  "description": "Codelab for Your First PWAPP",
+  "homepage": "https://codelabs.developers.google.com/codelabs/your-first-pwapp/",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-http-to-https": "^1.1.4",
+    "node-fetch": "^2.6.0"
   },
   "engines": {
-    "node": "6.9.x"
+    "node": "8.x"
   },
-  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/googlecodelabs/your-first-pwapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/googlecodelabs/your-first-pwapp/issues"
+  },
+  "license": "Apache2",
   "keywords": [
-    "node",
-    "glitch",
-    "express"
+    "progressive-web-app",
+    "pwa",
+    "installable web app"
   ]
 }
