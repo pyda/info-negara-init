@@ -843,7 +843,7 @@ legend {
 .s003 #box-info {
   width: 100%;
   max-width: 790px;
-  min-height: 80%;
+  min-height: 400px;
   overflow-y: auto;
   margin: auto;
   margin-bottom: 0;
@@ -949,7 +949,7 @@ legend {
   display: flex;
   -ms-flex-align: center;
       align-items: center;
-  padding: 10px 30px;
+  padding: 25px 30px;
 }
 
 .s003 form .inner-form .input-field.first-wrap .choices__inner .choices__list.choices__list--single {
