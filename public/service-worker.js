@@ -23,10 +23,7 @@ const DATA_CACHE_NAME = 'data-cache-v1';
 
 // CODE: Add list of files to cache here.
 const FILES_TO_CACHE = [
-  'offline.html',
-  /*
-	'manifest.json',
-  'indonesia.json',
+  '/',
   'index.html',
   'js/install.js',
   'js/main.js',
@@ -35,35 +32,32 @@ const FILES_TO_CACHE = [
   'js/extention/flatpickr.js',
   'js/extention/jquery-3.5.0.min.js',
   'images/world.png',
-  'images/world2.png',
-  'images/world3.png',
   'css/font.css',
   'css/main.css',
   'css/pxiEyp8kv8JHgFVrJJbecnFHGPezSQ.woff2',
   'css/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2',
-  'css/pxiEyp8kv8JHgFVrJJnecnFHGPezSQ.woff2'*/
+  'css/pxiEyp8kv8JHgFVrJJnecnFHGPezSQ.woff2'
 ];
 
 self.addEventListener('install', (evt) => {
   console.log('[ServiceWorker] Install');
-  // CODE: Precache static resources here.
+  // CODELAB: Precache static resources here.
   evt.waitUntil(
       caches.open(CACHE_NAME).then((cache) => {
         console.log('[ServiceWorker] Pre-caching offline page');
         return cache.addAll(FILES_TO_CACHE);
       })
   );
-
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (evt) => {
   console.log('[ServiceWorker] Activate');
-  // CODE: Remove previous cached data from disk.
+  // CODELAB: Remove previous cached data from disk.
   evt.waitUntil(
       caches.keys().then((keyList) => {
         return Promise.all(keyList.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (key !== CACHE_NAME && key !== DATA_CACHE_NAME) {
             console.log('[ServiceWorker] Removing old cache', key);
             return caches.delete(key);
           }
@@ -75,18 +69,32 @@ self.addEventListener('activate', (evt) => {
 
 self.addEventListener('fetch', (evt) => {
   console.log('[ServiceWorker] Fetch', evt.request.url);
-  // CODE: Add fetch event handler here.
-  if (evt.request.mode !== 'navigate') {
-    // Not a page navigation, bail.
+  // CODELAB: Add fetch event handler here.
+  if (evt.request.url.includes('/request.php')) {
+    console.log('[Service Worker] Fetch (data)', evt.request.url);
+    evt.respondWith(
+        caches.open(DATA_CACHE_NAME).then((cache) => {
+          return fetch(evt.request)
+              .then((response) => {
+                // If the response was good, clone it and store it in the cache.
+                if (response.status === 200) {
+                  cache.put(evt.request.url, response.clone());
+                  console.log(evt.request.url);
+                }
+                return response;
+              }).catch((err) => {
+                // Network request failed, try to get it from the cache.
+                return cache.match(evt.request);
+              });
+        }));
     return;
   }
   evt.respondWith(
-      fetch(evt.request)
-          .catch(() => {
-            return caches.open(CACHE_NAME)
-                .then((cache) => {
-                  return cache.match('offline.html');
-                });
-          })
+      caches.open(CACHE_NAME).then((cache) => {
+        return cache.match(evt.request)
+            .then((response) => {
+              return response || fetch(evt.request);
+            });
+      })
   );
 });
