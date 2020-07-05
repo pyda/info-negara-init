@@ -12,7 +12,6 @@
       href="https://glitch.com/favicon-app.ico"
       type="image/x-icon"
     />
-    <link rel="canonical" href="https://pyda-info-negara.glitch.me/"/>
     
     <script type="text/javascript">
       console.log(location.protocol);
@@ -24,12 +23,12 @@
       }
     </script>
 
-    <link href="https://pyda-info-negara.glitch.me/css/font.css" rel="stylesheet" />
-    <link href="https://pyda-info-negara.glitch.me/css/main.css" rel="stylesheet" />
+    <link href="css/font.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
     <title>Info Negara PWA</title>
 
     <!-- CODE: Add link rel manifest -->
-    <link rel="manifest" href="https://pyda-info-negara.glitch.me/manifest.json" />
+    <link rel="manifest" href="manifest.json" />
 
     <!-- CODE: Add iOS meta tags and icons -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -107,12 +106,12 @@
       </div>
     </div>
 
-    <script src="https://pyda-info-negara.glitch.me/js/extention/choices.js"></script>
+    <script src="js/extention/choices.js"></script>
 
     <!-- CODE: Add the install script here -->
     <!-- <script src="js/install.js"></script> -->
 
-    <script src="https://pyda-info-negara.glitch.me/js/extention/jquery-3.5.0.min.js"></script>
+    <script src="js/extention/jquery-3.5.0.min.js"></script>
     <script>
       // CODE: Register service worker.
       if ("serviceWorker" in navigator) {
@@ -163,7 +162,7 @@
             $("#info-data").html("");
 
             $.ajax({
-              url: "https://pyda-info-negara.glitch.me/request.php",
+              url: "request.php",
               data: {
                 label: $("#label").val(),
                 keyword: $("#search").val()
